@@ -8,7 +8,7 @@ namespace YellowPanda.Core
     {
         private void Awake()
         {
-            DontDestroyOnLoad(gameObject);
+            UnityEngine.Object.DontDestroyOnLoad(gameObject);
         }
     }
 }
