@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace YellowPanda.Editor {
+#if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(SceneAttribute))]
     public class SceneAttributeDrawer : PropertyDrawer {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
@@ -10,4 +11,5 @@ namespace YellowPanda.Editor {
             property.serializedObject.ApplyModifiedProperties();
         }
     }
+#endif
 }
