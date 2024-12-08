@@ -8,7 +8,7 @@ namespace YellowPanda.Extensions
     {
         public static T RandomWeighted<T>(this IEnumerable<T> list, IEnumerable<float> weights)
         {
-            return RandomWeighted(list, weights, Random.Range(0, 1000).ToString());
+            return RandomWeighted(list, weights, Random.Range(0, 100000).ToString());
         }
         public static T RandomWeighted<T>(this IEnumerable<T> list, IEnumerable<float> weights, string seed)
         {
@@ -24,7 +24,8 @@ namespace YellowPanda.Extensions
                 sum += w[i];
             }
 
-            float rng01 = Mathf.Abs(seed.GetHashCode()) / (float)int.MaxValue;
+            System.Random random = new System.Random(seed.GetHashCode());
+            float rng01 = Mathf.Abs(random.Next()) / (float)int.MaxValue;
             float rng = rng01 * sum;
             int c = 0;
             float sp = 0;
