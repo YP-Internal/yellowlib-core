@@ -8,6 +8,7 @@ namespace YellowPanda.Core.AssetCreation
 {
     public static class ScriptableObjectFactory
     {
+#if UNITY_EDITOR
         public static T Create<T>(string path) where T : ScriptableObject
         {
             T instance = ScriptableObject.CreateInstance<T>();
@@ -20,7 +21,7 @@ namespace YellowPanda.Core.AssetCreation
             return instance;
         }
 
-#if UNITY_EDITOR
+
         public static string GetEditorAssetPath()
         {
             string directoryPath = "Assets/Resources/Settings";
@@ -37,7 +38,7 @@ namespace YellowPanda.Core.AssetCreation
 
             return path;
         }
-#endif
+
 
         public static void EnsureDirectoryExists(string filePath)
         {
@@ -57,5 +58,6 @@ namespace YellowPanda.Core.AssetCreation
                 Debug.LogError($"Failed to create directory for path: {filePath}\nError: {ex.Message}");
             }
         }
+#endif
     }
 }
