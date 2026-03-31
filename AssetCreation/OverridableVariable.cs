@@ -1,7 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace YellowPanda.Core.AssetCreation
+namespace YellowPanda.AssetCreation
 {
     [System.Serializable]
     public class OverridableVariable<DataClass, ScriptableObjectClass> where DataClass : class where ScriptableObjectClass : OverridableVariableSO<DataClass>
