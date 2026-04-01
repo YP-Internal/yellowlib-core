@@ -13,7 +13,6 @@ namespace YellowPanda.EnumUtilitys
 {
     public static class EnumFileGenerator
     {
-        const string DEFAULT_FOLDER_OUTPUT = "Assets/Sourse/Scripts/GeneratedEnums/";
         const string ROOT_NAMESPACE = "YellowPanda.GeneratedEnums";
 
         [System.Serializable]
@@ -30,22 +29,19 @@ namespace YellowPanda.EnumUtilitys
         /// <param name="enumName">The name of the enum to be generated.</param>
         /// <param name="folderOutput">The output folder path where the enum file will be created. Defaults to DEFAULT_FOLDER_OUTPUT.</param>
         /// <exception cref="DuplicateNameException">Thrown when duplicate names are found in the enumsEntrys list.</exception>
-        public static GenerationCallback GenerateEnumFile(List<string> enumsEntrys, string enumName, string aditionalNamespace = "", string folderOutput = DEFAULT_FOLDER_OUTPUT)
+        public static GenerationCallback GenerateEnumFile(List<string> enumsEntrys, string enumName, string folderOutput, string aditionalNamespace = "")
         {
             if (HasDuplicatedNames(enumsEntrys))
                 throw new DuplicateNameException("Cant Generate Enum with duplicated names");
-
-            if (string.IsNullOrEmpty(folderOutput))
-                folderOutput = DEFAULT_FOLDER_OUTPUT;
 
             StringBuilder sb = new();
 
             sb.AppendLine("// This file was generated automatically, don't change.");
             sb.AppendLine();
             sb.AppendLine($"namespace {ROOT_NAMESPACE}{(string.IsNullOrEmpty(aditionalNamespace) ? ' ' : '.')}{aditionalNamespace}");
-            sb.AppendLine("    {");
-            sb.AppendLine("            public enum " + enumName);
-            sb.AppendLine("    {");
+            sb.AppendLine("{");
+            sb.AppendLine("        public enum " + enumName);
+            sb.AppendLine("        {");
 
             foreach (var name in enumsEntrys)
             {
@@ -53,16 +49,21 @@ namespace YellowPanda.EnumUtilitys
                 sb.AppendLine("    " + enumValue + ",");
             }
 
-            sb.AppendLine("}");
+            sb.AppendLine("        }");
             sb.AppendLine("}");
 
 
             if (!Directory.Exists(folderOutput))
+            {
                 Directory.CreateDirectory(folderOutput);
+            }
 
             string filePath = Path.Combine(folderOutput, enumName + ".cs");
             if (!File.Exists(filePath))
-                File.CreateText(filePath);
+            {
+                var createStream = File.CreateText(filePath);
+                createStream.Dispose();
+            }
 
             File.WriteAllText(filePath, sb.ToString());
 
@@ -84,7 +85,7 @@ namespace YellowPanda.EnumUtilitys
         /// <param name="objects">Array of Unity objects whose names will be used as enum entries.</param>
         /// <param name="overridName">Optional custom name for the enum. If not provided, defaults to "{ObjectType}Ids".</param>
         /// <param name="folderOutput">The output folder path where the enum file will be created. Defaults to DEFAULT_FOLDER_OUTPUT.</param>
-        public static GenerationCallback GenerateEnumFile<ObjectType>(ObjectType[] objects, string overridName = "", string aditionalNamespace = "", string folderOutput = DEFAULT_FOLDER_OUTPUT) where ObjectType : UnityEngine.Object
+        public static GenerationCallback GenerateEnumFile<ObjectType>(ObjectType[] objects, string folderOutput, string overridName = "", string aditionalNamespace = "") where ObjectType : UnityEngine.Object
         {
             if (objects == null || objects.Length == 0)
             {

@@ -139,6 +139,7 @@ namespace YellowPanda.EnumUtilitys
         [Button]
         public void ForceGenerateEnum()
         {
+            UpdateSettings();
             items.GenerateEnum();
         }
 
@@ -157,54 +158,36 @@ namespace YellowPanda.EnumUtilitys
         [BoxGroup("Settings")]
         [LabelText("Auto-Save Enum File")]
         [Tooltip("Automatically generate the enum file when items are modified")]
-        [OnValueChanged(nameof(UpdateInternalAutoSave))]
+        [OnValueChanged(nameof(UpdateSettings))]
 #endif
         [SerializeField] private bool autoSave = true;
 
 #if UNITY_EDITOR
-        [SerializeField]
-        [ToggleLeft]
-        [BoxGroup("Settings")]
-        [OnValueChanged(nameof(UpdateInternalAutoSave))]
-        bool overrideFolderOutput;
 
         [BoxGroup("Settings")]
         [LabelText("Output Folder")]
         [Tooltip("Folder path where the enum file will be generated (relative to project root)")]
         [FolderPath]
-        [OnValueChanged(nameof(UpdateInternalAutoSave))]
-        [ShowIf(nameof(overrideFolderOutput))]
+        [OnValueChanged(nameof(UpdateSettings))]
 #endif
         [SerializeField] private string folderOutput;
 
 #if UNITY_EDITOR
-        [SerializeField]
-        [BoxGroup("Settings")]
-        [ToggleLeft]
-        [OnValueChanged(nameof(UpdateInternalAutoSave))]
-        bool overrideEnumName;
 
         [BoxGroup("Settings")]
         [LabelText("Enum Name")]
         [Tooltip("Name of the generated enum (leave empty to use default naming)")]
-        [OnValueChanged(nameof(UpdateInternalAutoSave))]
-        [ShowIf(nameof(overrideEnumName))]
+        [OnValueChanged(nameof(UpdateSettings))]
         [SerializeField] private string enumName;
 #endif
 
         public InternalEnumKeyedList<UnityObject> items = new();
 
 #if UNITY_EDITOR
-        private void UpdateInternalAutoSave()
+        private void UpdateSettings()
         {
             if (items != null)
             {
-                if (!overrideFolderOutput)
-                    folderOutput = string.Empty;
-
-                if (overrideEnumName)
-                    enumName = string.Empty;
-
                 items.autoSave = autoSave;
                 items.output = folderOutput;
                 items.overrideName = enumName;
