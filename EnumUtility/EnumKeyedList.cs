@@ -134,6 +134,7 @@ namespace YellowPanda.EnumUtilitys
         string GetEnumType { get => $"Enum Type: {items.enumResult.enumName}"; }
         string GetEnumFilePath { get => $"Enum File Path: {items.enumResult.enumPath}"; }
 
+#if UNITY_EDITOR
         [BoxGroup("@" + nameof(GetEnumType))]
         [PropertyOrder(-1)]
         [Button]
@@ -143,7 +144,6 @@ namespace YellowPanda.EnumUtilitys
             items.GenerateEnum();
         }
 
-#if UNITY_EDITOR
         [BoxGroup("@" + nameof(GetEnumFilePath))]
         [PropertyOrder(-1)]
         [Button]
